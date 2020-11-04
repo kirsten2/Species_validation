@@ -28,7 +28,6 @@ except:
     exit()
 
 #Get all the genome-ids present in the ortholog-file, and all the gene-ids associated with each gene-family
-print('Parsing genome-ids from file "single_ortho.txt"')
 genome_ids = dict()
 OG_fams = dict()
 for line in fh_ortho_in:
@@ -47,7 +46,6 @@ genome_faa_dir = current_dir + '/genome_faa/'
 genome_ffn_dir = current_dir + '/genome_ffn/'
 ffn_seq_objects = dict()
 faa_seq_objects = dict()
-print('Creating dictionaries of amino-acid and nucleotide sequences of genes')
 for genome in genome_ids.keys():
     ffn_file = genome_ffn_dir + genome + '.ffn'
     faa_file = genome_faa_dir + genome + '.faa'
@@ -78,7 +76,6 @@ except OSError:
 os.chdir(output_dir)
 
 #Print multi-fasta files corresponding to each gene-family in the output dir
-print('Printing multi-fasta files to output directory: ', sys.argv[1])
 for OG in OG_fams.keys():
     OG_seq_ids = OG_fams[OG]
     OG_ffn_seq_obj = [ffn_seq_objects[x] for x in OG_seq_ids]
