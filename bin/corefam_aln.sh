@@ -45,7 +45,8 @@ for i in $( ls *.faa ); do
     ALN_NUC=$OG"_aln_nuc.fasta"
     python3 ../bin/trim_aln.py $ALN_NUC
     ALN_TRIM=$OG"_aln_trim.fasta"
-    sed -i 's/_.*$//g' $ALN_TRIM
+    sed 's/_.*$//g' $ALN_TRIM > temp_aln.txt
+    mv temp_aln.txt $ALN_TRIM
 done
 
 #Generate a concatenate alignment in phylip-format, ready for phylogenetic inference with e.g. RAxML
