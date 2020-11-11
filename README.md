@@ -10,5 +10,3 @@ Briefly, the pipeline consists of the following steps:
 2. Construction of trimmed nucleotide alignments for each core gene family
 3. Determination of candidate SDPs, based on core genome phylogenies and genomic average nucleotide identities
 4. Validation of candidate SDPs, based on recruitment of core ortholog sequences from metagenomic ORFs
-
-Temp. change to test commit -Aiswarya
