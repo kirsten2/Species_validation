@@ -23,7 +23,7 @@ Briefly, the pipeline consists of the following steps:
 
 The first two steps can be performed using the bash-script "corefam_aln.sh". It takes as input a file of orthologous gene-families, formatted as per Orthofinder. Furthermore, amino-acid and nucleotide sequences of the genes in the orthofinder file must be present in the directories "genome_faa/genome_ffn", which in turn must be present in the run directory.
 
-The third step typically involves generation of core genome phylogenies and/or estimation of genomic ANI. For convenience. A concatenate alignment of core gene sequences is generated with the bash-script  "corefam_aln.sh", which can be used directly as input for many phylogenetic tools (fx. RAxML). However, I leave it up to the user to decide which approach to use here. At the end, the user will need to generate a plain text-file indicate the genome-ids of a set of candidate-SDPs.
+The third step typically involves generation of core genome phylogenies and/or estimation of genomic ANI. For convenience, a concatenate alignment of core gene sequences is generated with the bash-script  "corefam_aln.sh", which can be used directly as input for many phylogenetic tools (fx. RAxML). However, I leave it up to the user to decide which approach to use here. At the end, the user will need to generate a plain text-file indicate the genome-ids of a set of candidate-SDPs (see example-file "Candidate_SDPs.txt"), which will be used as input for the SDP validation in the next step.
 
 The fourth step can be done with the bash-script "SDP_validation.sh". The overall idea is, as stated,  to align metagenomic ORFs to single-copy core gene families, and record the percentage identity for each ORF (last part still in prep.)
 
