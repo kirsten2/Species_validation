@@ -5,7 +5,6 @@ This repository contains scripts for validating candidate SDPs with metagenomic 
 Ellegaard & Engel (2019): Genomic diversity landscape of the honey bee gut microbiota. Nature communications.
 Ellegaard et al. (2020): Vast differences in strain-level diversity in the gut microbiota of two closely related honey bee species. Current Biology
 
-
 #About SDP validation: what and why
 
 The starting point of the pipeline is a collection of sequenced genomes (bacterial isolates), belonging to the same 16S rRNA phylotype (i.e. > 97% identity in 16S rRNA gene). 16S rRNA phylotypes often contain multiple SDPs (aka "species"), which by definition are discrete from each other at the sequence-level (all strains of the same species are more closely related to each other than to strains of any other species). By analyzing genomes of bacterial isolates, one can get a good indication of whether a 16S rRNA phylotype contains multiple SDPs (see fx. Jain et al. 2019). However, working with bacterial isolates, it is usually unknown how well the sequenced genomes represent the natural bacterial population, especially if only a small number of strains have been sequenced. Therefore, I refer to such SDPs as "Candidate SDPs". 
