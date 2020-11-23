@@ -32,9 +32,9 @@ if [[ ! -f "$ORTHOFILE" ]]; then
     exit 1
 fi
 
-#Check that mafft is installed and in path
-if ! [ -x "$(command -v mafft)" ]; then
-  echo 'Error: mafft is not installed/not in path.' >&2
+#Check that muscle alignment software is installed and in path
+if ! [ -x "$(command -v muscle)" ]; then
+  echo 'Error: muscle is not installed/not in path.' >&2
   exit 1
 fi
 
@@ -52,11 +52,12 @@ python3 bin/extract_orthologs.py $OUTDIR
 cd $OUTDIR
 
 #For each gene-family: 1. align the amino-acid sequences, 2. translate to codon-aligned nucleotide alignement, 3. trim the alignment, 4. simplify seq-headers to genome-id
-echo "Starting alignment of amino-acid sequences with mafft, back-translation and trimming"
+echo "Starting alignment of amino-acid sequences, back-translation and trimming"
 for i in $( ls *.faa ); do
     OG=${i:0:9}
     echo "Processing: "$OG
-    mafft --auto --quiet $OG".faa" > $OG"_aln.fasta"
+    muscle -in $OG".faa" -out $OG"_aln.fasta" -quiet
+    #mafft --auto --quiet $OG".faa" > $OG"_aln.fasta"
     ALN_AA=$OG"_aln.fasta"
     FFN_FILE=$OG".ffn"
     python3 ../bin/aln_aa_to_dna.py $ALN_AA $FFN_FILE

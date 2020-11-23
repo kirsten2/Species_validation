@@ -2,6 +2,7 @@
 import os
 import sys
 from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 
 #Usage: python3 extract_orthologs.py firm5
@@ -17,14 +18,25 @@ def genome_count_line(seq_ids):
 def get_seq_objects(filename):
     seq_record_dict = dict()
     for seq_record in SeqIO.parse(filename, "fasta"):
-        seq_record_dict[seq_record.id] = seq_record
+        if (seq_record.seq.find('*') != -1):  #Sometimes, stop-codons are indicated with an asterisk for amino acid gene sequences, which in turn generates warnings when using "muscle" for alignments. This block of code remove the trailing asterisk when present.
+            seq_string = str(seq_record.seq)
+            seq_chomp = seq_string[:-1]
+            new_record =  SeqRecord(
+                Seq(seq_chomp),
+                id=seq_record.id,
+                name="",
+                description=""
+                )
+            seq_record_dict[seq_record.id] = new_record
+        else:
+            seq_record_dict[seq_record.id] = seq_record
     return(seq_record_dict)
 
 #Open the ortholog file
 try:
-    fh_ortho_in = open('single_ortho.txt')
+    fh_ortho_in = open('single_ortho_filt.txt')
 except:
-    print('Input-file not found: "single_ortho.txt". Exiting script')
+    print('Input-file not found: "single_ortho_filt.txt". Exiting script')
     exit()
 
 #Get all the genome-ids present in the ortholog-file, and all the gene-ids associated with each gene-family
