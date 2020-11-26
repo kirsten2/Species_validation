@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #Parse script arguments (name of ortholog-file and output directory), or print script usage if required arguments were not provided
 
@@ -47,20 +47,30 @@ fi
 
 #STEP1: Subset SDP-data from fasta-files in the input directory. Generate SDP directories, and write subset data to the corresponding dirs.
 
-echo 'Performing step1: subset SDP-data fasta-files in the input directory'
+echo 'Performing step1: subset SDP-data fasta-files in the input directory' | tee -a "log.txt"
 python3 bin/extract_SDP_coreseqs.py $CAND_SDP $IN_DIR
 
 #STEP2: Blasting SDP core sequences against ORF database
+
+SDP_DIR_STRING=$(python3 bin/get_SDP_dirs.py $CAND_SDP) #Get the SDP-dirs to be processed from the candidate-SDP input file, check that they contain fasta-files for blasting (exit bash-script with error message if they dont)
+IFS=' ' read -ra SDP_DIR <<< $SDP_DIR_STRING
+if [ ${SDP_DIR[0]} == "ERROR" ]; then
+    echo $SDP_DIR_STRING | tee -a "log.txt"
+    exit
+fi
+echo 'Performing step2: blasting SDP core sequences against ORF database' | tee -a "log.txt"
 RUN_DIR=$(pwd)
-echo 'Performing step2: blasting SDP core sequences against ORF database'
-while IFS= read -r DIR; do
-    cd $DIR
-    echo "Blasting core sequences in directory:"
-    echo $DIR
+for DIR in "${SDP_DIR[@]}"; do
+    echo "Blasting core sequences in directory: "$DIR 
+    cd $DIR 
     COUNTER=0
     for i in $(ls *ffn); do 
-        OG=${i:0:9}
-        blastn -db $RUN_DIR/$ORF_DB -query $i -outfmt 5 -evalue 1e-5 -perc_identity 70 > $OG".blastn"
+        BLAST_OUTFILE=${i:0:9}".blastn"
+        if [[ -f "$BLAST_OUTFILE" ]]; then
+            echo "This blast-file already exists: "$BLAST_OUTFILE" in "$DIR | tee -a "log.txt"
+        else
+            blastn -db $RUN_DIR/$ORF_DB -query $i -outfmt 5 -evalue 1e-5 -perc_identity 70 > $BLAST_OUTFILE
+        fi
         (( COUNTER++ ))       
         if (( $COUNTER % 10 == 0 ))
         then
@@ -68,30 +78,26 @@ while IFS= read -r DIR; do
         fi
     done    
     cd $RUN_DIR
-done < "SDP_dirs.txt"
+    echo "Done" 
+done
+    
+#STEP3: Recruiting ORF sequences from ORF-db, based on blast-files
 
-
-#STEP3: Extracting ORF sequences from ORF-db, based on blast-files, print to SDP-dirs
-
-cd $RUN_DIR
-while IFS= read -r DIR; do
-    echo "Parsing blast-files from directory $DIR"
+echo 'Performing step3: recruiting ORF sequences from ORF database file, based on blast-files' | tee -a "log.txt"
+for DIR in "${SDP_DIR[@]}"; do
+    echo "Processing SDP-directory: "$DIR 
     python3 bin/recruit_ORFs.py $ORF_DB $DIR
-done < "SDP_dirs.txt"
+done
 
-#STEP4: TO BE DONE. Add recruited ORFs to core alignments, record max perc-id and SDP affiliation. Print to file in SDP_dir
+#STEP4: Adding recruited ORFs to core alignments, recording max perc-id and SDP affiliation. 
 
+echo 'Performing step4: adding recruited ORFs to core sequence gene alignments, and calculating max percentage identity' | tee -a "log.txt"
+for DIR in "${SDP_DIR[@]}"; do
+    echo "Processing SDP-directory: "$DIR
+    python3 bin/orf_aln_perc_id.py $CAND_SDP $IN_DIR $DIR
+done 
 
-
-
-
-
-
-
-
-
-
-
+echo 'All done! Check log.txt file for some summary stats on the results' | tee -a "log.txt"
 
 
 
