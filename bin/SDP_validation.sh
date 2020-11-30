@@ -93,11 +93,11 @@ done
 
 echo 'Performing step4: adding recruited ORFs to core sequence gene alignments, and calculating max percentage identity' | tee -a "log.txt"
 for DIR in "${SDP_DIR[@]}"; do
-    echo "Processing SDP-directory: "$DIR
+    echo "Processing SDP-directory: "$DIR | tee -a "log.txt"
     python3 bin/orf_aln_perc_id.py $CAND_SDP $IN_DIR $DIR
 done 
 
-echo 'All done! Check log.txt file for some summary stats on the results' | tee -a "log.txt"
+echo 'All done! Check log.txt file for some summary stats on the results'
 
 
 

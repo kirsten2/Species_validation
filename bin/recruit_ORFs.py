@@ -87,6 +87,6 @@ for OG in OG_hit_id.keys():
            SeqIO.write(ORF_seq_objects, orf_outfile, "fasta")
 os.chdir(current_dir)
 fh_log_out = open('log.txt','a')
-fh_log_out.write("Recruited " + str(nb_orfs_recruited) + " ORFs to dir: " + sdp_dir "\n")
+fh_log_out.write("Recruited " + str(nb_orfs_recruited) + " ORFs to dir: " + sdp_dir + "\n")
 fh_log_out.close()
 print("Recruited",nb_orfs_recruited, "ORFs to SDP", sdp_dir)
