@@ -6,7 +6,7 @@ from Bio.Blast import NCBIXML
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-#Usage: python3 recruit_ORFs.py ORFs_db_example.ffn SDP_dir
+#Usage: python3 recruit_ORFs.py ORFs_db_example.ffn species_dir
 
 def get_hit_ids(blast_file):
     blastfile_handle = open(blast_file)
@@ -22,19 +22,19 @@ def get_hit_ids(blast_file):
 
 #Parse input arguments, set of working dirs
 orf_db_file = sys.argv[1]
-sdp_dir = sys.argv[2]
+species_dir = sys.argv[2]
 current_dir = os.getcwd()
 fh_log_out = open('log.txt','a')
 
 #Move into SDP directory, use glob to get the names of all blast-files (exit script, if there are no such files)
-os.chdir(sdp_dir)
+os.chdir(species_dir)
 blast_suffix = '*blastn'
 blast_files = glob.glob(blast_suffix)
 nb_blast_files = len(blast_files)
 if (nb_blast_files == 0):
-    print('ERROR: No blast-files with the suffix "*blastn" were found in the SDP directory: \n')
-    fh_log_out.write('ERROR: No blast-files with the suffix "*blastn" were found in the SDP directory: \n')
-    fh_log_out.write(sdp_dir + "\n")
+    print('ERROR: No blast-files with the suffix "*blastn" were found in the species directory: \n')
+    fh_log_out.write('ERROR: No blast-files with the suffix "*blastn" were found in the species directory: \n')
+    fh_log_out.write(species_dir + "\n")
     exit()
 
 #Loop over blast-files, and get the hit-ids for all hits. Store in dictionaries, with OG-affiliation. 
@@ -66,7 +66,7 @@ for seq_record in SeqIO.parse(orf_db_file, "fasta"):
 
             
 #Print ORF sequences to the SDP directory
-os.chdir(sdp_dir)
+os.chdir(species_dir)
 print('Printing recruited ORFs to files')
 nb_orfs_recruited=0
 for OG in OG_hit_id.keys():
@@ -87,6 +87,6 @@ for OG in OG_hit_id.keys():
            SeqIO.write(ORF_seq_objects, orf_outfile, "fasta")
 os.chdir(current_dir)
 fh_log_out = open('log.txt','a')
-fh_log_out.write("Recruited " + str(nb_orfs_recruited) + " ORFs to dir: " + sdp_dir + "\n")
+fh_log_out.write("Recruited " + str(nb_orfs_recruited) + " ORFs to dir: " + species_dir + "\n")
 fh_log_out.close()
-print("Recruited",nb_orfs_recruited, "ORFs to SDP", sdp_dir)
+print("Recruited",nb_orfs_recruited, "ORFs to species", species_dir)
