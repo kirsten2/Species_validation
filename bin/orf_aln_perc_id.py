@@ -12,7 +12,6 @@ from Bio import SearchIO
 from Bio.Blast.Applications import NcbimakeblastdbCommandline
 from Bio.Blast.Applications import NcbiblastnCommandline
 from io import StringIO
-import numpy as np
 from shutil import copyfile
 import statistics
 

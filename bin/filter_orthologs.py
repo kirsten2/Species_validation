@@ -42,7 +42,7 @@ def count_small_seqs(OG_id):
     return(small_seq_count)
             
 
-#Check that the input-file "single_ortho.txt" has been provided. Determine path to ffn-files, and check that the directory exists
+#Check that the input-file "single_ortho.txt" has been provided. Determine full path to ffn-files
 try:
     ortho_in = sys.argv[1]
     fh_ortho_in = open(ortho_in)
@@ -51,13 +51,6 @@ except:
     exit()
 current_dir = os.getcwd()
 genome_ffn_dir = current_dir + '/genome_ffn/'
-isdir_ffn = os.path.isdir(genome_ffn_dir)
-if (isdir_ffn == False):
-    print('The path to the following required directory does not exist:')
-    print(genome_ffn_dir)
-    print('Check the run-directory! Exiting script')
-    exit()
-
 
 #Get all the genome-ids from the ortholog-file, and all the gene-ids associated with each gene-family
 genome_ids = dict()

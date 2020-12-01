@@ -18,7 +18,7 @@ def genome_count_line(seq_ids):
 def get_seq_objects(filename):
     seq_record_dict = dict()
     for seq_record in SeqIO.parse(filename, "fasta"):
-        if (seq_record.seq.find('*') != -1):  #Sometimes, stop-codons are indicated with an asterisk for amino acid gene sequences, which in turn generates warnings when using "muscle" for alignments. This block of code remove the trailing asterisk when present.
+        if (seq_record.seq[-1] == '*'):  #Sometimes, stop-codons are indicated with an asterisk for amino acid gene sequences, which in turn generates warnings when using "muscle" for alignments. This block of code remove the trailing asterisk when present.
             seq_string = str(seq_record.seq)
             seq_chomp = seq_string[:-1]
             new_record =  SeqRecord(

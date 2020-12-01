@@ -60,7 +60,7 @@ if [ ${SPECIES_DIR[0]} == "ERROR" ]; then
 fi
 echo 'Performing step2: blasting species core sequences against ORF database' | tee -a "log.txt"
 RUN_DIR=$(pwd)
-SAVEIFS=$IFS  #Lines to counter-act automatic backups on mac, generating file-names with spaces..
+SAVEIFS=$IFS  #code to counter-act automatic backups on mac (skip file-names with spaces..)
 IFS=$(echo -en "\n\b")
 for DIR in "${SPECIES_DIR[@]}"; do
     echo "Blasting core sequences in directory: "$DIR 
