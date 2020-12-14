@@ -50,7 +50,7 @@ fi
 
 #Check that the directories "genes_faa" and "genes_ffn" are present in the run-directory
 
-if [ ! -d "genome_faa" ] || [ ! -d "genome_ffn" ]; then
+if [ ! -d "genes_faa" ] || [ ! -d "genes_ffn" ]; then
     echo 'the directory "genes_faa"  and/or "genes_ffn" doesnt exist in the run directory:'
     echo $RUN_DIR
     echo "Exiting script"
