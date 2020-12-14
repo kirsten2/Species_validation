@@ -7,7 +7,7 @@ bash bin/$(basename "$0") [-h] [-d OUTDIR] [-o ORTHOFILE]
 Generates back-translated nucleotide alignments of filtered single-copy orthologous gene-families, to be used for phylogenetic inference and/or SDP metagenomic validation pipeline. 
 
 The following options must be provided:
-     -d name of directory for alignment files (required)
+     -d name of output directory for alignment files (required)
      -o name of orthofinder file, from which single-copy families will be parsed (required)"
 
 options=':ho:d:'
@@ -48,10 +48,10 @@ if ! [ -x "$(command -v muscle)" ]; then
   exit 1
 fi
 
-#Check that the directories "genome_faa" and "genome_ffn" are present in the run-directory
+#Check that the directories "genes_faa" and "genes_ffn" are present in the run-directory
 
 if [ ! -d "genome_faa" ] || [ ! -d "genome_ffn" ]; then
-    echo 'the directory "genome_faa"  and/or "genome_ffn" doesnt exist in the run directory:'
+    echo 'the directory "genes_faa"  and/or "genes_ffn" doesnt exist in the run directory:'
     echo $RUN_DIR
     echo "Exiting script"
     exit 1

@@ -47,10 +47,10 @@ try:
     ortho_in = sys.argv[1]
     fh_ortho_in = open(ortho_in)
 except:
-    print('The file "single_ortho.txt", was not found in the run-directory. Exiting script')
+    print('The input-file with orthologous gene-families was not found in the run-directory. Exiting script')
     exit()
 current_dir = os.getcwd()
-genome_ffn_dir = current_dir + '/genome_ffn/'
+genes_ffn_dir = current_dir + '/genes_ffn/'
 
 #Get all the genome-ids from the ortholog-file, and all the gene-ids associated with each gene-family
 genome_ids = dict()
@@ -68,7 +68,7 @@ fh_ortho_in.close()
 #Get the gene-lengths of all genes, for each genome
 all_gene_lengths = dict()
 for genome in genome_ids.keys():
-    gene_lengths = get_gene_lengths(genome, genome_ffn_dir)
+    gene_lengths = get_gene_lengths(genome, genes_ffn_dir)
     all_gene_lengths.update(gene_lengths)
 
 #Generate the filtered ortholog-file

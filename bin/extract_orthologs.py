@@ -54,13 +54,13 @@ fh_ortho_in.close()
 
 #Construct dictionaries of gene-sequences 
 current_dir = os.getcwd()
-genome_faa_dir = current_dir + '/genome_faa/'
-genome_ffn_dir = current_dir + '/genome_ffn/'
+genes_faa_dir = current_dir + '/genes_faa/'
+genes_ffn_dir = current_dir + '/genes_ffn/'
 ffn_seq_objects = dict()
 faa_seq_objects = dict()
 for genome in genome_ids.keys():
-    ffn_file = genome_ffn_dir + genome + '.ffn'
-    faa_file = genome_faa_dir + genome + '.faa'
+    ffn_file = genes_ffn_dir + genome + '.ffn'
+    faa_file = genes_faa_dir + genome + '.faa'
     try:
         fh_ffn_file = open(ffn_file)
         fh_faa_file = open(faa_file)
