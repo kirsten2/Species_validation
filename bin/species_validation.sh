@@ -72,6 +72,7 @@ fi
 echo 'Performing step1: subset fasta-files in the input directory' | tee -a "log.txt"
 python3 bin/extract_species_coreseqs.py $CAND_SPECIES $IN_DIR
 
+
 #STEP2: Blasting species-level core sequences against ORF database
 
 SPECIES_DIR_STRING=$(python3 bin/get_species_dirs.py $CAND_SPECIES) #Get the species-dirs to be processed from the candidate-species input file, check that they contain fasta-files for blasting (exit bash-script with error message if they dont)
@@ -89,11 +90,13 @@ for DIR in "${SPECIES_DIR[@]}"; do
     cd $DIR 
     COUNTER=0
     for i in $(ls *ffn); do
-        if [[ ! "$i" =~ [[:space:]] ]]; then 
+        if [[ "$i" =~ [[:space:]] ]]; then
+            rm "$i" #Remove duplicate files if generated 
+        else
+            (( COUNTER++ ))
             BLAST_OUTFILE=${i:0:9}".blastn"
             blastn -db $RUN_DIR/$ORF_DB -query $i -outfmt 5 -evalue 1e-5 -perc_identity 70 > $BLAST_OUTFILE
         fi
-        (( COUNTER++ ))       
         if (( $COUNTER % 10 == 0 )); then
             echo "Finished blasting $COUNTER files.."
         fi

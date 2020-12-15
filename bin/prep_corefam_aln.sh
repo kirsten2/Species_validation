@@ -79,7 +79,9 @@ echo "Starting alignment of amino-acid sequences, and back-translation to nucleo
 SAVEIFS=$IFS  #code to counter-act automatic backups on mac, generating file-names with spaces..
 IFS=$(echo -en "\n\b")
 for i in $( ls *.faa ); do
-    if [[ ! "$i" =~ [[:space:]] ]]; then 
+    if [[ "$i" =~ [[:space:]] ]]; then
+            rm "$i" #Remove duplicate files if generated 
+    else
         OG=${i:0:9}
         echo "Processing: "$OG
         muscle -in $OG".faa" -out $OG"_aln.fasta" -quiet
