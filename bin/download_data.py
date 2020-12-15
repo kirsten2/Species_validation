@@ -19,24 +19,20 @@ import argparse
 
 #Links, file-names, sizes and md5 check-sums
 zenodo_links = {
-    "genes": "https://sandbox.zenodo.org/record/709842/files/genes_db.tar.gz",
-    "genomes": "https://sandbox.zenodo.org/record/709842/files/genomes_db.tar.gz",
-    "metagenomes": "https://sandbox.zenodo.org/record/709842/files/metagenomic_orfs.tar.gz"
+    "genes": "https://sandbox.zenodo.org/record/710401/files/genes_db.tar.gz",
+    "metagenomes": "https://sandbox.zenodo.org/record/710401/files/metagenomic_orfs.tar.gz"
 }
 file_names = {
     "genes": "genes_db.tar.gz",
-    "genomes": "genomes_db.tar.gz",
     "metagenomes": "metagenomic_orfs.tar.gz"
 }
 file_sizes = {
     "genes": 130,
-    "genomes": 96,
     "metagenomes": 43
 }
 check_sums = {
     "genes": "fee84a9017e8dc8b1630991cb05ca787",
-    "genomes": "ed010b67bdcb1fa931b7de16aea169d8", 
-    "metagenomes": "21a985aa90bc49f866c65883431116c7"
+    "metagenomes": "caf5d88017184e3f93deadeecd4cdaae"
 }
 
 #function to print progress bar for python 3
@@ -71,7 +67,6 @@ def md5(fname):
 
 parser = argparse.ArgumentParser(description="This script downloads data from zenodo, for running various metagenomic pipelines. Specify at least one data-set from the following options:")
 parser.add_argument("--genes", help="Download the gene database", action="store_true")
-parser.add_argument("--genomes", help="Download the genome database", action="store_true")
 parser.add_argument("--metagenomes", help="Download metagenomic ORF example data", action="store_true")
 args = parser.parse_args()
 
@@ -84,17 +79,6 @@ if args.genes:
         print(genes_faa_dir)
         print(genes_ffn_dir)
         print("Exiting script!")
-        sys.exit(1)
-if args.genomes:
-    bed_dir = current_dir + '/bed_files/'
-    db_file = 'genomes_db.fasta'
-    if (os.path.isdir(bed_dir)):
-        print("Directory with bed-files already exist:")
-        print(bed_dir)
-        print("Exiting script!")
-        sys.exit(1)
-    if (os.path.isfile(db_file)):
-        print('The file "genomes_db.fasta" already exist in the run directory, exiting script!')
         sys.exit(1)
 if args.metagenomes:
     meta_orf_file = 'metagenomic_orfs.ffn'
