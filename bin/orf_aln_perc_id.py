@@ -68,7 +68,7 @@ def add_orf_perc_id(ref_aln_file, orf_file):
     max_perc_id_gene = None
     for ref_id in ref_aln_ids:
         ref_id_split = ref_id.split('_')
-        if (species_dict[ref_id_split[0]] == species_dir): #Only align orf to core-seqs of the recruiting species
+        if (ref_id_split[0] in species_dict and species_dict[ref_id_split[0]] == species_dir): #Only align orf to core-seqs of the recruiting species
             sub_seq_objects = [all_seq_objects[ref_id], all_seq_objects[orf_id]]
             sub_aln = MultipleSeqAlignment(sub_seq_objects)
             sub_aln_perc_id = perc_id(sub_aln, orf_length) 
@@ -139,7 +139,9 @@ for orf_file in orf_files:
             orf_max_perc_id = round(aln_result[2],2)
             orf_id = aln_result[0]
             best_hit_to_species_gene_id = aln_result[1]
-            best_species = species_dict[blast_result]
+            best_species = "other"
+            if blast_result in species_dict:
+                best_species = species_dict[blast_result]
             if (best_species == species_dir):
                 count_species_recruits[orf_id] = orf_max_perc_id
             out_str = "\t".join([OG, orf_id, best_hit_to_species_gene_id, str(orf_max_perc_id), best_species])
