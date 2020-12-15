@@ -20,11 +20,11 @@ import argparse
 #Links, file-names, sizes and md5 check-sums
 zenodo_links = {
     "genes": "https://sandbox.zenodo.org/record/710401/files/genes_db.tar.gz",
-    "metagenomes": "https://sandbox.zenodo.org/record/710401/files/metagenomic_orfs.tar.gz"
+    "metagenomes": "https://sandbox.zenodo.org/record/710401/files/metagenomic_orfs.ffn.tar.gz"
 }
 file_names = {
     "genes": "genes_db.tar.gz",
-    "metagenomes": "metagenomic_orfs.tar.gz"
+    "metagenomes": "metagenomic_orfs.ffn.tar.gz"
 }
 file_sizes = {
     "genes": 130,
