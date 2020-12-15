@@ -72,7 +72,7 @@ def add_orf_perc_id(ref_aln_file, orf_file):
             sub_seq_objects = [all_seq_objects[ref_id], all_seq_objects[orf_id]]
             sub_aln = MultipleSeqAlignment(sub_seq_objects)
             sub_aln_perc_id = perc_id(sub_aln, orf_length) 
-            if (sub_aln_perc_id > max_perc_id): 
+            if (sub_aln_perc_id > max_perc_id and sub_aln_perc_id > 60): 
                 max_perc_id = sub_aln_perc_id
                 max_perc_id_gene = ref_id
     return(orf_id, max_perc_id_gene, max_perc_id)
@@ -158,8 +158,8 @@ if (nb_species_recruits == 0):
     fh_log_out.write('However, none of these had a best blast hit to the recruiting species\n\n')
 else:
     species_recruit_values = list(count_species_recruits.values())
-    mean_species_perc_id = species_recruit_values[0]
+    median_species_perc_id = species_recruit_values[0]
     if (nb_species_recruits > 1):
-        mean_species_perc_id = statistics.mean(species_recruit_values)
-    fh_log_out.write('Out of these, ' + str(nb_species_recruits) + ' had a best blast hit to the recruiting species, with a mean perc-id of ' + str(round(mean_species_perc_id,2)) + "\n\n")
+        median_species_perc_id = statistics.median(species_recruit_values)
+    fh_log_out.write('Out of these, ' + str(nb_species_recruits) + ' had a best blast hit to the recruiting species, with a median perc-id of ' + str(round(median_species_perc_id,2)) + "\n\n")
 fh_log_out.close()

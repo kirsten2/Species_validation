@@ -45,6 +45,28 @@ if [ ! "$ORF_DB" ] ; then
     echo "$usage" >&2; exit 1
 fi
 
+##Check script requirements
+
+#Check that muscle alignment software is installed and in path
+if ! [ -x "$(command -v muscle)" ]; then
+    echo 'Error: muscle is not installed/not in path.' >&2
+    exit 1
+fi
+
+#Check that blast software is installed and in path
+if ! [ -x "$(command -v blastn)" ]; then
+    echo 'Error: blast is not installed/not in path.' >&2
+    exit 1
+fi
+
+#Check that the ORF database has been indexed for blasting. If not, do the indexing.
+
+ORF_DB_INDEXFILE=$ORF_DB".nhr"
+if [ ! -f "$ORF_DB_INDEXFILE" ]; then
+    echo "Indexing ORF-db file for blasting"
+    makeblastdb -in $ORF_DB -dbtype nucl
+fi
+
 #STEP1: Subset data from fasta-files in the input directory. Generate species directories, and write subset data to the corresponding dirs.
 
 echo 'Performing step1: subset fasta-files in the input directory' | tee -a "log.txt"

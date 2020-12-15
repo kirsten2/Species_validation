@@ -12,8 +12,10 @@ from Bio.Align import MultipleSeqAlignment
 
 def get_species_genome(fh_file):
     species_genome_dict = dict()
+    line_count = 0
     for line in fh_file:
-        if (line.find('Genome_id') != -1): continue
+        line_count = line_count + 1
+        if (line_count == 1): continue      
         line = line.strip()
         split_line = line.split('\t')
         genome_id = split_line[0]
