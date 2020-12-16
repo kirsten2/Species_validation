@@ -1,7 +1,7 @@
 Bacterial species validation with metagenomic data
 =======
 
-This repository contains scripts for validating candidate bacterial species with metagenomic data (ORFs from metagenome assemblies).
+This repository contains scripts for validating candidate bacterial species with metagenomic data.
 
 If you are using this pipeline, please cite:
 
@@ -25,7 +25,7 @@ By analyzing bacterial genomes, one can get a good indication of whether a 16S r
 
 The current pipeline will address both of these points.
 
-The species validation in this pipeline is done based on the 16S rRNA phylotype core genes, i.e. the gene-set shared among all strains of the 16S rRNA phylotype, as inferred from the genomic data. A major motivation for using these genes for the validation is that they are also commonly used for estimating relative abundances of species in metagenomic data. If the species validation pipeline confirms that the species are discrete from each other based on the core genes, we can also assume that the species can be reliably quantified with these genes. This will be true, even if the species engage in horizontal gene transfer for other genes, as is likely to be the case for closely related species that co-exist in the same environment.
+The species validation is done based on the 16S rRNA phylotype core genes, i.e. the gene-set shared among all strains of the 16S rRNA phylotype, as inferred from the sequenced genomes. The rationale for using these genes for the validation is that they are also commonly used for estimating relative abundances of species with metagenomic data. If the species validation pipeline confirms that the species are discrete from each other based, on the core genes, we can also assume that they can be reliably quantified with these genes. This will be true, even if the species engage in horizontal gene transfer for other genes, as is likely to be the case for closely related species that co-exist in the same environment.
 
 Pre-requisites
 --------
@@ -52,7 +52,7 @@ Note: ```blast``` and ```muscle``` must be in the system path when executing the
 Running pipeline with example data
 --------
 
-In this example, the pipeline is applied to three species belonging to the same 16S rRNA phylotype (> 97% 16S rRNA), using a database for the honey bee gut microbiota and two metagenomic samples ([zenodo_link](coming here)). 
+In this example, the pipeline is applied to three species belonging to the same 16S rRNA phylotype (> 97% 16S rRNA), using a genome database for the honey bee gut microbiota and two metagenomic samples ([zenodo_link](coming here)). 
 
 Download example data from zenodo:
 
@@ -74,9 +74,10 @@ Run the species validation pipeline:
 ```bash
 bash bin/species_validation.sh -c Candidate_species_example.txt -i firm5 -d metagenomic_orfs.ffn
 ```
-**Expected result**: Three new directories (```firm5_3```,```firm5_5```,```firm5_7```), containing fasta-files with sequences of ORFs recruited to each core gene family, and a file named ```perc_id.txt``` within each directory. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the result. Estimated time: ~15min 
 
-The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences for the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
+**Expected result**: Three new directories (```firm5_3```,```firm5_5```,```firm5_7```), containing fasta-files with sequences of ORFs recruited to each core gene family, and a file named ```perc_id.txt``` within each directory. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. Estimated time: ~15min 
+
+The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
 The R-script in the bin-directory can be used to plot the density distribution of the data, for example:
 
