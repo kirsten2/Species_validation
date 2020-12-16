@@ -1,10 +1,20 @@
-NOTE: this repository is currently under development!
+Bacterial species validation with metagenomic data
+=======
 
-This repository contains scripts for validating candidate SDPs with metagenomic data, using the approach described in the publications:
+This repository contains scripts for validating candidate bacterial species with metagenomic data (ORFs from metagenome assemblies).
 
-Ellegaard & Engel (2019): Genomic diversity landscape of the honey bee gut microbiota. Nature communications.
-Ellegaard et al. (2020): Vast differences in strain-level diversity in the gut microbiota of two closely related honey bee species. Current Biology
+Check the [wiki](https://github.com/kirsten2/SDP_validation/wiki) for more information.
 
+If you are using this pipeline, please cite:
+
+> Kirsten Maren Ellegaard & Philipp Engel. **Genomic diversity landscape of the honey bee > gut microbiota**; _Nature Communications_ **10**, Article number: 446 (2019).
+> PMID: 30683856;
+> doi:[10.1038/s41467-019-08303-0](https://www.nature.com/articles/s41467-019-08303-0)
+
+> Kirsten Maren Ellegaard, Shota Suenami, Ryo Miyasaki, Philipp Engel. **Vast differences in strain-level diversity in the gut microbiota of two closely related honey bee species**; _Current Biology_ **10**, Epub 2020 Jun 11.
+> PMID: 32531278;
+> doi: [10.1016/j.cub.2020.04.070](https://www.cell.com/current-biology/fulltext/S0960-9822(20\)30586-8)
+ 
 #About SDP validation: what and why
 
 The starting point of the pipeline is a collection of sequenced genomes (bacterial isolates), belonging to the same 16S rRNA phylotype (i.e. > 97% identity in 16S rRNA gene). 16S rRNA phylotypes often contain multiple SDPs (aka "species"), which by definition are discrete from each other at the sequence-level (all strains of the same species are more closely related to each other than to strains of any other species). By analyzing genomes of bacterial isolates, one can get a good indication of whether a 16S rRNA phylotype contains multiple SDPs (see fx. Jain et al. 2019). However, working with bacterial isolates, it is usually unknown how well the sequenced genomes represent the natural bacterial population, especially if only a small number of strains have been sequenced. Therefore, I refer to such SDPs as "Candidate SDPs". 
