@@ -65,7 +65,7 @@ python bin/download_data.py --genes --metagenomes
 
 **Expected result**: two directories with gene-sequences for all genomes in the honey bee gut microbiota database (```genes_faa```,```genes_ffn```), and a fasta-file with all metagenomic ORFs (```metagenomic_orfs.ffn```)
 
-To run the pipeline on the 16S rRNA phylotype "Firm5" using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
+To run the pipeline on the 16S rRNA phylotype "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
 ```bash
 bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
@@ -78,6 +78,7 @@ Next, run the species validation pipeline:
 ```bash
 bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
+
 
 **Expected result**: Seven new directories (```firm5_1``` - ```firm5_7```), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
@@ -99,7 +100,6 @@ To run the pipeline with the full set of core genes for just three of the seven 
 bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example_all.txt
 bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
-
 
 Check the wiki for further details on the pipeline and plot interpretation:
 
