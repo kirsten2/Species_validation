@@ -57,11 +57,12 @@ The pipeline requires the following input-files:
 3. A tab-delimited file, specifying genome-ids for the candidate species
 4. A file with orthologous gene-families, predicted on the reference genomes
 
-A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [zenodo_link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
+A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
 
 ```bash
 python bin/download_data.py --genes --metagenomes
 ```
+
 **Expected result**: two directories with gene-sequences for all genomes in the honey bee gut microbiota database (```genes_faa```,```genes_ffn```), and a fasta-file with all metagenomic ORFs (```metagenomic_orfs.ffn```)
 
 To run the pipeline on the 16S rRNA phylotype "Firm5" using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
@@ -98,6 +99,7 @@ To run the pipeline with the full set of core genes for just three of the seven 
 bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example_all.txt
 bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
+
 
 Check the wiki for further details on the pipeline and plot interpretation:
 
