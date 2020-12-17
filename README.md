@@ -31,9 +31,9 @@ Pre-requisites
 This pipeline requires:
 
 * Python 3 (or higher)
-* numpy (tested with version 1.15.0
-* biopython (tested with version 1.72)
-* Bash (tested with version 4/5)
+* numpy
+* biopython
+* Bash
 * blast+ suite ([link]())
 * muscle ([link]())
 
@@ -57,7 +57,7 @@ The pipeline requires the following input-files:
 3. A tab-delimited file, specifying genome-ids for the candidate species
 4. A file with orthologous gene-families, predicted on the reference genomes
 
-A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [zenodo_link](coming here). Download the data-set from zenodo:
+A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [zenodo_link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
 
 ```bash
 python bin/download_data.py --genes --metagenomes
@@ -75,7 +75,7 @@ bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
 Next, run the species validation pipeline:
 
 ```bash
-bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5 -d metagenomic_orfs.ffn
+bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
 
 **Expected result**: Seven new directories (```firm5_1``` - ```firm5_7```), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
@@ -95,8 +95,8 @@ To run the pipeline with the full set of core genes for just three of the seven 
 
 
 ```bash
-bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example.txt
-bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5 -d metagenomic_orfs.ffn
+bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example_all.txt
+bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
 
 Check the wiki for further details on the pipeline and plot interpretation:
