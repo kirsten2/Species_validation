@@ -1,9 +1,9 @@
 Bacterial species validation with metagenomic data
 =======
 
-This repository contains scripts for validating candidate bacterial species with metagenomic data.
+This repository contains a pipeline for validating candidate bacterial species with metagenomic data.
 
-If you are using this pipeline, please cite:
+If you are using the pipeline, please cite:
 
 > Kirsten Maren Ellegaard & Philipp Engel. **Genomic diversity landscape of the honey bee > gut microbiota**; _Nature Communications_ **10**, Article number: 446 (2019).
 > PMID: 30683856;
@@ -16,16 +16,16 @@ If you are using this pipeline, please cite:
 About metagenomic species validation: what and why
 ----------
 
-The starting point of this pipeline is a collection of sequenced bacterial genomes belonging to the same 16S rRNA phylotype (i.e. > 97% identity in 16S rRNA gene). 16S rRNA phylotypes often contain multiple SDPs ("Sequence-discrete populations"), also  commonly referred to as "species", which by definition are discrete from each other at the sequence-level (see fx. [10.1038/s41467-018-07641-9](https://www.nature.com/articles/s41467-018-07641-9)). 
+The starting point of this pipeline is a collection of sequenced bacterial genomes belonging to the same 16S rRNA phylotype (i.e. > 97% identity in 16S rRNA gene). 16S rRNA phylotypes often contain multiple SDPs ("Sequence-discrete populations"), also  commonly referred to as "species", which by definition are discrete from each other at the sequence-level (see fx. [10.1038/s41467-018-07641-9](https://www.nature.com/articles/s41467-018-07641-9)). By analyzing bacterial genomes, one can get a good indication of whether a 16S rRNA phylotype contains multiple species. However, it is often unclear how well sequenced genomes represent natural bacterial populations, especially if only a small number of strains have been sequenced. If  genomes of bacterial isolates are to be used as a database for metagenomic analysis, it is therefore worthwhile to check whether:
 
-By analyzing bacterial genomes, one can get a good indication of whether a 16S rRNA phylotype contains multiple species. However, it is often unclear how well sequenced genomes represent natural bacterial populations, especially if only a small number of strains have been sequenced. If  genomes of bacterial isolates are to be used as a database for metagenomic analysis, it is therefore worthwhile to check whether:
-
-* Putative species in the database are discrete from each other in the metagenomes
+* Putative related species in the database are discrete from each other in the metagenomes
 * Genomes in the database are representative of the strains in the metagenomes 
 
 The current pipeline will address both of these points.
 
-The species validation is done based on the 16S rRNA phylotype core genes, i.e. the gene-set shared among all strains of the 16S rRNA phylotype, as inferred from the sequenced genomes. The rationale for using these genes for the validation is that they are also commonly used for estimating relative abundances of species with metagenomic data. If the species validation pipeline confirms that the species are discrete from each other based, on the core genes, we can also assume that they can be reliably quantified with these genes. This will be true, even if the species engage in horizontal gene transfer for other genes, as is likely to be the case for closely related species that co-exist in the same environment.
+The species validation is done based on core genes, i.e. genes known to be shared among all strains of the related species that are to be tested for discreteness. Core genes are widely used for inferring relatedness among bacteria, but also for estimating species abundances with metagenomic data. By using core genes for metagenomic species quantification, robust estimates may be obtained, even if the species engage in horizontal gene transfer for other genes, as is likely to be the case for closely related species that co-exist in the same environment. 
+
+In the case of the honey bee gut microbiota, previous studies have used the largest possible set of core genes, i.e. the gene-set shared among all strains of a given 16S rRNA phylotype (as estimated from the available sequenced genomes). However, the pipeline can also be run with a smaller set of genes, i.e. universal core genes. This may be preferable if a large number of species are to be tested, or if there are very few available reference genomes. 
 
 Pre-requisites
 --------
@@ -33,9 +33,9 @@ Pre-requisites
 This pipeline requires:
 
 * Python 3 (or higher)
-* numpy 1.15.0
-* biopython..
-* Bash (version 4 or higher)
+* numpy (tested with version 1.15.0
+* biopython (tested with version 1.72)
+* Bash (tested with version 4/5)
 * blast+ suite ([link]())
 * muscle ([link]())
 
@@ -49,33 +49,38 @@ git clone https://github.com/kirsten2/SDP_validation.git
 
 Note: ```blast``` and ```muscle``` must be in the system path when executing the bash-scripts
 
-Running pipeline with example data
+Quick-start: Running the pipeline with example data
 --------
 
-In this example, the pipeline is applied to three species belonging to the same 16S rRNA phylotype (> 97% 16S rRNA), using a genome database for the honey bee gut microbiota and two metagenomic samples ([zenodo_link](coming here)). 
+The pipeline requires the following input-files:
 
-Download example data from zenodo:
+1. Two directories (```genes_faa```,```genes_ffn```), containing gene-sequences for all reference genomes
+2. A file with metagenomic ORFs predicted on metagenome assemblies
+3. A tab-delimited file, specifying genome-ids for the candidate species
+4. A file with orthologous gene-families, predicted on the reference genomes
+
+A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [zenodo_link](coming here). Download the data-set from zenodo:
 
 ```bash
 python bin/download_data.py --genes --metagenomes
 ```
 **Expected result**: two directories with gene-sequences for all genomes in the honey bee gut microbiota database (```genes_faa```,```genes_ffn```), and a fasta-file with all metagenomic ORFs (```metagenomic_orfs.ffn```)
 
-Subset gene-files for single-copy core gene family sequences (based on the example ortholog-prediction file), and generate alignment-files:
+To run the pipeline on the 16S rRNA phylotype "Firm5" using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
 ```bash
-bash bin/prep_corefam_aln.sh -d firm5 -o OrthologousGroups_example.txt
+bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
 ```
 
-**Expected result**: a new directory named ```firm5```, containing core gene family sequences and alignments. Estimated time: ~10min
+**Expected result**: a new directory named ```firm5_uni```, containing fasta-files for the sequences and alignments of the 10 universal core gene families. 
 
-Run the species validation pipeline:
+Next, run the species validation pipeline:
 
 ```bash
-bash bin/species_validation.sh -c Candidate_species_example.txt -i firm5 -d metagenomic_orfs.ffn
+bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5 -d metagenomic_orfs.ffn
 ```
 
-**Expected result**: Three new directories (```firm5_3```,```firm5_5```,```firm5_7```), containing fasta-files with sequences of ORFs recruited to each core gene family, and a file named ```perc_id.txt``` within each directory. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. Estimated time: ~15min 
+**Expected result**: Seven new directories (```firm5_1``` - ```firm5_7```), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
 The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
@@ -88,6 +93,14 @@ Rscript ../bin/plot_validation.R "firm5_3" perc_id.txt
 
 **Expected result**: in this case, a file named ```firm5_3_recruitment_plot.pdf```within the ```firm5_3```species directory. 
 
+To run the pipeline with the full set of core genes for just three of the seven putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
+
+
+```bash
+bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example.txt
+bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5 -d metagenomic_orfs.ffn
+```
+
 Check the wiki for further details on the pipeline and plot interpretation:
 
 [wiki](https://github.com/kirsten2/SDP_validation/wiki) 
@@ -95,6 +108,6 @@ Check the wiki for further details on the pipeline and plot interpretation:
 Running the pipeline with other data
 ---------
 
-Further details on the pipeline are provided in the wiki:
+To run the pipeline with your own data, further instructions on file-preparation and formatting are provided in the wiki:
 
 [wiki](https://github.com/kirsten2/SDP_validation/wiki) 

@@ -1,0 +1,11 @@
+Locustag	Phylotype	SDP
+Ga0072404	firm5	firm5_3_all
+Ga0133562	firm5	firm5_3_all
+Ga0225908	firm5	firm5_3_all
+Ga0226840	firm5	firm5_3_all
+Ga0227359	firm5	firm5_3_all
+Ga0226852	firm5	firm5_5_all
+Ga0307804	firm5	firm5_7_all
+Ga0311394	firm5	firm5_7_all
+Ga0312303	firm5	firm5_7_all
+Ga0312304	firm5	firm5_7_all
