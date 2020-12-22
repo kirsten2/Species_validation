@@ -5,7 +5,7 @@ This repository contains a pipeline for validating candidate bacterial species w
 
 If you are using the pipeline, please cite:
 
-> Kirsten Maren Ellegaard & Philipp Engel. **Genomic diversity landscape of the honey bee > gut microbiota**; _Nature Communications_ **10**, Article number: 446 (2019).
+> Kirsten Maren Ellegaard & Philipp Engel. **Genomic diversity landscape of the honey bee gut microbiota**; _Nature Communications_ **10**, Article number: 446 (2019).
 > PMID: 30683856;
 > doi:[10.1038/s41467-019-08303-0](https://www.nature.com/articles/s41467-019-08303-0)
 
@@ -60,7 +60,7 @@ The pipeline requires the following input-files:
 A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
 
 ```bash
-python bin/download_data.py --genes --metagenomes
+python3 bin/download_data.py --genes --metagenomes
 ```
 
 **Expected result**: two directories with gene-sequences for all genomes in the honey bee gut microbiota database (```genes_faa```,```genes_ffn```), and a fasta-file with all metagenomic ORFs (```metagenomic_orfs.ffn```)
@@ -97,7 +97,7 @@ To run the pipeline with the full set of core genes for just three of the seven 
 
 
 ```bash
-bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_example_all.txt
+bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_all_example.txt
 bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
 
