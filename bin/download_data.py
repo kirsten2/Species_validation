@@ -19,20 +19,25 @@ import argparse
 
 #Links, file-names, sizes and md5 check-sums
 zenodo_links = {
-    "genes": "https://sandbox.zenodo.org/record/710401/files/genes_db.tar.gz",
-    "metagenomes": "https://sandbox.zenodo.org/record/710401/files/metagenomic_orfs.ffn.tar.gz"
+    "genome_db": "https://sandbox.zenodo.org/record/767359/files/genome_db_210402.tar.gz",
+    "metagenomic_orfs": "https://sandbox.zenodo.org/record/767359/files/metagenomic_orfs.ffn.tar.gz",    
+    "metagenomic_reads": "https://sandbox.zenodo.org/record/767359/files/metagenomic_reads.fastq.tar.gz",
 }
+
 file_names = {
-    "genes": "genes_db.tar.gz",
-    "metagenomes": "metagenomic_orfs.ffn.tar.gz"
+    "genome_db": "genome_db_210402.tar.gz",
+    "metagenomic_orfs": "metagenomic_orfs.ffn.tar.gz",
+    "metagenomic_reads": "metagenomic_reads.fastq.tar.gz",
 }
 file_sizes = {
-    "genes": 130,
-    "metagenomes": 43
+    "genome_db": 370,
+    "metagenomic_orfs": 18.5,
+    "metagenomic_reads": 1100,
 }
 check_sums = {
-    "genes": "fee84a9017e8dc8b1630991cb05ca787",
-    "metagenomes": "caf5d88017184e3f93deadeecd4cdaae"
+    "genome_db": "9fa43b1bfa981115409bada6f52d58e1",
+    "metagenomic_orfs": "caf5d88017184e3f93deadeecd4cdaae",
+    "metagenomic_reads": "ff640807b464f73c6e9a2a8a6e574f48",
 }
 
 #function to print progress bar for python 3
@@ -66,21 +71,21 @@ def md5(fname):
 #Parse input arguments, check for existing files/directories
 
 parser = argparse.ArgumentParser(description="This script downloads data from zenodo, for running various metagenomic pipelines. Specify at least one data-set from the following options:")
-parser.add_argument("--genes", help="Download the gene database", action="store_true")
-parser.add_argument("--metagenomes", help="Download metagenomic ORF example data", action="store_true")
+parser.add_argument("--genome_db", help="Download the gut microbiota genomic database", action="store_true")
+parser.add_argument("--metagenomic_orfs", help="Download metagenomic ORF example data", action="store_true")
+parser.add_argument("--metagenomic_reads", help="Download metagenomic reads example data", action="store_true")
 args = parser.parse_args()
 
+genome_db_dirs = ['faa_files', 'ffn_files', 'bed_files', 'gff_files', 'Orhofinder']
 current_dir = os.getcwd()
-if args.genes:
-    genes_faa_dir = current_dir + '/genes_faa/'
-    genes_ffn_dir = current_dir + '/genes_ffn/'
-    if (os.path.isdir(genes_faa_dir) or os.path.isdir(genes_ffn_dir)):
-        print("One or both of these directories already exist:")
-        print(genes_faa_dir)
-        print(genes_ffn_dir)
-        print("Exiting script!")
-        sys.exit(1)
-if args.metagenomes:
+if args.genome_db:
+    for dir in genome_db_dirs:
+        if os.path.isdir(dir):
+            print("The following directory already exist in the run-dir:")
+            print(dir)
+            print("Exiting script!")
+            sys.exit(1)
+if args.metagenomic_orfs:
     meta_orf_file = 'metagenomic_orfs.ffn'
     if (os.path.isfile(meta_orf_file)):
         print('The file "metagenomic_orfs.ffn" already exist in the run directory, exiting script!')

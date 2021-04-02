@@ -5,7 +5,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 
-#Usage: python3 extract_orthologs.py firm5
+#Usage: python3 extract_orthologs.py scp_orthofile firm5
 
 def genome_count_line(seq_ids):
     genomes = dict()
@@ -34,9 +34,10 @@ def get_seq_objects(filename):
 
 #Open the ortholog file
 try:
-    fh_ortho_in = open('single_ortho_filt.txt')
+    fh_ortho_in = open(sys.argv[1])
 except:
-    print('Input-file not found: "single_ortho_filt.txt". Exiting script')
+    print('Cant open orthofile:', sys.argv[1])
+    print("Exiting script!")
     exit()
 
 #Get all the genome-ids present in the ortholog-file, and all the gene-ids associated with each gene-family
@@ -54,8 +55,8 @@ fh_ortho_in.close()
 
 #Construct dictionaries of gene-sequences 
 current_dir = os.getcwd()
-genes_faa_dir = current_dir + '/genes_faa/'
-genes_ffn_dir = current_dir + '/genes_ffn/'
+genes_faa_dir = current_dir + '/faa_files/'
+genes_ffn_dir = current_dir + '/ffn_files/'
 ffn_seq_objects = dict()
 faa_seq_objects = dict()
 for genome in genome_ids.keys():
@@ -77,7 +78,7 @@ for genome in genome_ids.keys():
 
 
 #Create the output directory, print multi-fasta files corresponding to each gene-family into the directory
-output_dir_name = sys.argv[1]
+output_dir_name = sys.argv[2]
 output_dir = current_dir + '/' + output_dir_name
 try:
     os.mkdir(output_dir)

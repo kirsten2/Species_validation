@@ -4,7 +4,7 @@
 usage="
 bash bin/$(basename "$0") [-h] [-d OUTDIR] [-o ORTHOFILE]
 
-Generates back-translated nucleotide alignments of filtered single-copy orthologous gene-families, to be used for phylogenetic inference and/or SDP metagenomic validation pipeline. 
+Generates back-translated nucleotide alignments of single-copy orthologous gene-families, to be used for phylogenetic inference and/or SDP metagenomic validation pipeline. 
 
 The following options must be provided:
      -d name of output directory for alignment files (required)
@@ -49,31 +49,23 @@ if ! [ -x "$(command -v muscle)" ]; then
 fi
 
 #Check that the directories "genes_faa" and "genes_ffn" are present in the run-directory
-
-if [ ! -d "genes_faa" ] || [ ! -d "genes_ffn" ]; then
-    echo 'the directory "genes_faa"  and/or "genes_ffn" doesnt exist in the run directory:'
+if [ ! -d "faa_files" ] || [ ! -d "ffn_files" ]; then
+    echo 'the directory "faa_files"  and/or "ffn_files" doesnt exist in the run directory:'
     echo $RUN_DIR
     echo "Exiting script"
     exit 1
 fi
 
-##Start the script
-
-#Generate ortholog-file with single-copy ortholog families. Filter single-copy orthologs by length (gene-families containing genes shorter than 300bp are removed)
-
-python3 bin/get_scp_orthologs.py $ORTHOFILE 
-python3 bin/filter_orthologs.py single_ortho.txt
+##Start script
 
 #Extract gene-sequences for each single-copy ortholog family into fasta-files in the output directory (exit script if unsuccessful).
-
 echo "Extracting filtered single-copy ortholog gene-family sequences into directory: $OUTDIR"
-python3 bin/extract_orthologs.py $OUTDIR
+python3 bin/extract_orthologs.py "$ORTHOFILE" "$OUTDIR"
 if [ ! -d $OUTDIR ]; then
     exit 1 
 fi
 
 #For each gene-family: 1. align the amino-acid sequences, 2. translate to codon-aligned nucleotide alignement, 3. simplify seq-headers to genome-id
-
 cd $OUTDIR
 echo "Starting alignment of amino-acid sequences, and back-translation to nucleotide alignments"
 SAVEIFS=$IFS  #code to counter-act automatic backups on mac, generating file-names with spaces..
