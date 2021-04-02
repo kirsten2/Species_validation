@@ -109,7 +109,7 @@ To address the question whether the candidate species are discrete from each oth
 
 In contrast, for "firm5_bombus", the distributions overlap, and the vast majority of the recruited ORFs have alignment identities below 95%. This is consistent with the candidate species being derived from bumble bees, while the metagenomic ORFs were derived from honey bees. In this case, the existence of the species cannot be validated, since it was not detected in the data.
 
-To address the question whether the candidate species are representative of the strains in the metagenomes, check the curve for the first distribution in the plot. For example, the curve for species "firm5_7" is exceptionally narrow (see "Recuitment_plot_examples.pdf"), with most values above 98%, indicative of a very close match between the strains in the metagenomes and the reference genomes in the database. On the other hand, a broader curve was generated for "firm5_7", indicating a somewhat higher level of divergence between the metagenomes and the database.
+To address the question whether the candidate species are representative of the strains in the metagenomes, check the curve for the first distribution in the plot. For example, the curve for species "firm5_7" is exceptionally narrow (see "Recuitment_plot_examples.pdf"), with most values above 98%, indicative of a very close match between the strains in the metagenomes and the reference genomes in the database. On the other hand, a broader curve was generated for "firm5_4", indicating a somewhat higher level of divergence between the metagenomes and the database.
 
 To quantify a species, both requirements should be met (discreteness and high representation). 
 
