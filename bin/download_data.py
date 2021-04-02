@@ -19,24 +19,24 @@ import argparse
 
 #Links, file-names, sizes and md5 check-sums
 zenodo_links = {
-    "genome_db": "https://sandbox.zenodo.org/record/767359/files/genome_db_210402.tar.gz",
-    "metagenomic_orfs": "https://sandbox.zenodo.org/record/767359/files/metagenomic_orfs.ffn.tar.gz",    
-    "metagenomic_reads": "https://sandbox.zenodo.org/record/767359/files/metagenomic_reads.fastq.tar.gz",
+    "genome_db": "https://sandbox.zenodo.org/record/769286/files/genome_db_210402.tar.gz",
+    "species_validation": "https://sandbox.zenodo.org/record/769286/files/species_validation.tar.gz",    
+    "metagenomic_reads": "https://sandbox.zenodo.org/record/769286/files/metagenomic_reads.fastq.tar.gz",
 }
 
 file_names = {
     "genome_db": "genome_db_210402.tar.gz",
-    "metagenomic_orfs": "metagenomic_orfs.ffn.tar.gz",
+    "species_validation": "species_validation.tar.gz",
     "metagenomic_reads": "metagenomic_reads.fastq.tar.gz",
 }
 file_sizes = {
     "genome_db": 370,
-    "metagenomic_orfs": 18.5,
+    "species_validation": 220,
     "metagenomic_reads": 1100,
 }
 check_sums = {
     "genome_db": "9fa43b1bfa981115409bada6f52d58e1",
-    "metagenomic_orfs": "caf5d88017184e3f93deadeecd4cdaae",
+    "species_validation": "b7df6f8ada50125f3ba38e1d13875cfb",
     "metagenomic_reads": "ff640807b464f73c6e9a2a8a6e574f48",
 }
 
@@ -72,7 +72,7 @@ def md5(fname):
 
 parser = argparse.ArgumentParser(description="This script downloads data from zenodo, for running various metagenomic pipelines. Specify at least one data-set from the following options:")
 parser.add_argument("--genome_db", help="Download the gut microbiota genomic database", action="store_true")
-parser.add_argument("--metagenomic_orfs", help="Download metagenomic ORF example data", action="store_true")
+parser.add_argument("--species_validation", help="Download species validation example data", action="store_true")
 parser.add_argument("--metagenomic_reads", help="Download metagenomic reads example data", action="store_true")
 args = parser.parse_args()
 
@@ -85,11 +85,6 @@ if args.genome_db:
             print(dir)
             print("Exiting script!")
             sys.exit(1)
-if args.metagenomic_orfs:
-    meta_orf_file = 'metagenomic_orfs.ffn'
-    if (os.path.isfile(meta_orf_file)):
-        print('The file "metagenomic_orfs.ffn" already exist in the run directory, exiting script!')
-        sys.exit(1)
 if not any(vars(args).values()):
     parser.print_help(sys.stderr)
     sys.exit(1)

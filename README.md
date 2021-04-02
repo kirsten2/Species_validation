@@ -42,7 +42,7 @@ Installation
 --------
 
 ```bash
-git clone https://github.com/kirsten2/SDP_validation.git
+git clone https://github.com/kirsten2/Species_validation.git
 ```
 
 Note: ```blast``` and ```muscle``` must be in the system path when executing the bash-scripts
@@ -60,10 +60,10 @@ The pipeline requires the following input-files:
 A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
 
 ```bash
-python3 bin/download_data.py --genome_db --metagenomic_orfs
+python3 bin/download_data.py --species_validation
 ```
 
-**Expected result**: four directories with genomic data for all genomes in the honey bee gut microbiota database (```faa_files```,```ffn_files```,```bed_files```, ```gff_files```), the genome database (```genome_db_210402```), the genome database metafile (```genome_db_metafile_210402.txt```) and a fasta-file with metagenomic ORFs (```metagenomic_orfs.ffn```)
+**Expected result**: two directories with genomic data for all genomes in the honey bee gut microbiota database (```faa_files```,```ffn_files```),  the genome database metafile (```genome_db_metafile_210402.txt```) and a fasta-file with metagenomic ORFs (```metagenomic_orfs.ffn```)
 
 To run the pipeline on the 16S rRNA phylotype "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
@@ -76,10 +76,10 @@ bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
 Next, run the species validation pipeline:
 
 ```bash
-bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5_uni -d metagenomic_orfs.ffn
+bash bin/species_validation.sh -c Candidate_species_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
 
-**Expected result**: Six new directories (```firm5_1```, ```firm5_4```, ```firm5_7```,), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
+**Expected result**: Six new directories (```firm5_1```, ```firm5_2```,```firm5_3```,```firm5_4```,```firm5_7```, ```firm5_bombus```,), corresponding to each of six related putative species affiliated with the 16S rRNA phylotype "Lactobacillus Firm5". Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
 The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
@@ -92,22 +92,34 @@ Rscript ../bin/plot_validation.R "firm5_3" perc_id.txt
 
 **Expected result**: in this case, a file named ```firm5_3_recruitment_plot.pdf```within the ```firm5_3```species directory. 
 
-To run the pipeline with the full set of core genes for all the putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
+Interpretation of results
+--------
 
+Once the alignment percentage identity has been calculated between the recruited metagenomic ORFs and the core genes in the genomic database, the results can be qualitatively evaluated, using the file "perc_id.txt" (contained within each of the output directories for the candidate species). The file contains one line per recruited ORF, with the following five columns:
+
+* OG_group: Identifier of the orthologous gene-family to which the ORF was recruited
+* ORF_id: fasta-header of the ORF
+* Genome_id: locus-tag identifier of the genome with the closest match for the recruiting candidate species
+* Perc_id: Percentage alignment identity to the genome with the closest match for the recruiting candidate species
+* Closest_SDP: name of candidate species with the best blast hit
+
+Thus, the data for the recruited ORFs can be split into two categories: 1. recruited ORFs, with best blast-hit to the recruiting candidate species, 2. recruited ORFs, which have a better hit to another candidate species. The Rscript included in the repository will plot these two data fractions in different colors, using the first argument to indicate the name of the recruiting species.
+
+To address the question whether the candidate species are discrete from each other in the metagenomes, check whether the two plotted distributions overlap. For example, a nice separation can be seen in the "Recruitment_plot_examples.pdf" file for the five of the species (firm5: 1-4,7), indicating that the core genes form discrete populations for the recruited metagenomic orfs, consistent with the expectation for bacterial species. 
+
+In contrast, for "firm5_bombus", the distributions overlap, and the vast majority of the recruited ORFs have alignment identities below 95%. This is consistent with the candidate species being derived from bumble bees, while the metagenomic ORFs were derived from honey bees. In this case, the existence of the species cannot be validated, since it was not detected in the data.
+
+To address the question whether the candidate species are representative of the strains in the metagenomes, check the curve for the first distribution in the plot. For example, the curve for species "firm5_7" is exceptionally narrow (see "Recuitment_plot_examples.pdf"), with most values above 98%, indicative of a very close match between the strains in the metagenomes and the reference genomes in the database. On the other hand, a broader curve was generated for "firm5_7", indicating a somewhat higher level of divergence between the metagenomes and the database.
+
+To quantify a species, both requirements should be met (discreteness and high representation). 
+
+Running the pipeline with larger data-sets/other candidate species
+--------
+
+To run the pipeline with the full set of core genes for all the putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
 
 ```bash
 grep firm5 genome_db_metafile_210402.txt > Candidate_species_all_example.txt
 bash bin/prep_corefam_aln.sh -d firm5_all -o Orthofinder/4_firm5_single_ortho_filt.txt
 bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
-
-Check the wiki for further details on the pipeline and plot interpretation:
-
-[wiki](https://github.com/kirsten2/SDP_validation/wiki) 
-
-Running the pipeline with other data
----------
-
-To run the pipeline with your own data, further instructions on file-preparation and formatting are provided in the wiki:
-
-[wiki](https://github.com/kirsten2/SDP_validation/wiki) 
