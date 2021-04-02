@@ -52,7 +52,7 @@ Quick-start: Running the pipeline with example data
 
 The pipeline requires the following input-files:
 
-1. Two directories (```genes_faa```,```genes_ffn```), containing gene-sequences for all reference genomes
+1. Two directories (```faa_files```,```ffn_files```), containing gene-sequences for all reference genomes
 2. A file with metagenomic ORFs predicted on metagenome assemblies
 3. A tab-delimited file, specifying genome-ids for the candidate species
 4. A file with orthologous gene-families, predicted on the reference genomes
@@ -60,10 +60,10 @@ The pipeline requires the following input-files:
 A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
 
 ```bash
-python3 bin/download_data.py --genes --metagenomes
+python3 bin/download_data.py --genome_db --metagenomic_orfs
 ```
 
-**Expected result**: two directories with gene-sequences for all genomes in the honey bee gut microbiota database (```genes_faa```,```genes_ffn```), and a fasta-file with all metagenomic ORFs (```metagenomic_orfs.ffn```)
+**Expected result**: four directories with genomic data for all genomes in the honey bee gut microbiota database (```faa_files```,```ffn_files```,```bed_files```, ```gff_files```), the genome database (```genome_db_210402```), the genome database metafile (```genome_db_metafile_210402.txt```) and a fasta-file with metagenomic ORFs (```metagenomic_orfs.ffn```)
 
 To run the pipeline on the 16S rRNA phylotype "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
@@ -79,8 +79,7 @@ Next, run the species validation pipeline:
 bash bin/species_validation.sh -c Candidate_species_uni_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
 
-
-**Expected result**: Seven new directories (```firm5_1``` - ```firm5_7```), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
+**Expected result**: Six new directories (```firm5_1```, ```firm5_4```, ```firm5_7```,), corresponding to each of the seven putative species affiliated with the 16S rRNA phylotype. Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
 The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
@@ -93,11 +92,12 @@ Rscript ../bin/plot_validation.R "firm5_3" perc_id.txt
 
 **Expected result**: in this case, a file named ```firm5_3_recruitment_plot.pdf```within the ```firm5_3```species directory. 
 
-To run the pipeline with the full set of core genes for just three of the seven putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
+To run the pipeline with the full set of core genes for all the putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
 
 
 ```bash
-bash bin/prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_all_example.txt
+grep firm5 genome_db_metafile_210402.txt > Candidate_species_all_example.txt
+bash bin/prep_corefam_aln.sh -d firm5_all -o Orthofinder/4_firm5_single_ortho_filt.txt
 bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
 
