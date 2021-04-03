@@ -59,7 +59,7 @@ The pipeline requires the following input-files:
 3. A tab-delimited file, specifying genome-ids for the candidate species
 4. A file with orthologous gene-families, predicted on the reference genomes
 
-A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://zenodo.org/record/4661061#.YGgpxC0RoRA). Download the data-set from zenodo:
+A data-set derived from the honey bee gut microbiota can be downloaded from zenodo [link](https://zenodo.org/record/4661061#.YGgpxC0RoRA), and used to test the pipeline. Download the data-set from zenodo:
 
 ```bash
 download_data.py --species_validation
