@@ -20,9 +20,9 @@ import argparse
 #Links, file-names, sizes and md5 check-sums
 
 zenodo_links = {
-    "genome_db": "https://sandbox.zenodo.org/record/4661061/files/genome_db_210402.tar.gz",
-    "species_validation": "https://sandbox.zenodo.org/record/4661061/files/species_validation.tar.gz",    
-    "metagenomic_reads": "https://sandbox.zenodo.org/record/4661061/files/metagenomic_reads.fastq.tar.gz",
+    "genome_db": "https://zenodo.org/record/4661061/files/genome_db_210402.tar.gz",
+    "species_validation": "https://zenodo.org/record/4661061/files/species_validation.tar.gz",    
+    "metagenomic_reads": "https://zenodo.org/record/4661061/files/metagenomic_reads.fastq.tar.gz",
 }
 
 file_names = {
