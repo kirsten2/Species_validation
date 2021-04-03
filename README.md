@@ -67,7 +67,7 @@ download_data.py --species_validation
 
 **Expected result**: two directories with genomic data for all genomes in the honey bee gut microbiota database (```faa_files```,```ffn_files```),  the genome database metafile (```genome_db_metafile_210402.txt```) and a fasta-file with metagenomic ORFs (```metagenomic_orfs.ffn```)
 
-To run the pipeline on the 16S rRNA phylotype "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
+To run the pipeline on the 16S rRNA phylotype *Lactobacillus* "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
 ```bash
 prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
