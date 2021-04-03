@@ -18,10 +18,11 @@ import urllib.request
 import argparse
 
 #Links, file-names, sizes and md5 check-sums
+
 zenodo_links = {
-    "genome_db": "https://sandbox.zenodo.org/record/769286/files/genome_db_210402.tar.gz",
-    "species_validation": "https://sandbox.zenodo.org/record/769286/files/species_validation.tar.gz",    
-    "metagenomic_reads": "https://sandbox.zenodo.org/record/769286/files/metagenomic_reads.fastq.tar.gz",
+    "genome_db": "https://sandbox.zenodo.org/record/4661061/files/genome_db_210402.tar.gz",
+    "species_validation": "https://sandbox.zenodo.org/record/4661061/files/species_validation.tar.gz",    
+    "metagenomic_reads": "https://sandbox.zenodo.org/record/4661061/files/metagenomic_reads.fastq.tar.gz",
 }
 
 file_names = {
@@ -36,7 +37,7 @@ file_sizes = {
 }
 check_sums = {
     "genome_db": "9fa43b1bfa981115409bada6f52d58e1",
-    "species_validation": "b7df6f8ada50125f3ba38e1d13875cfb",
+    "species_validation": "368d352604c0539ab31564851fe38970",
     "metagenomic_reads": "ff640807b464f73c6e9a2a8a6e574f48",
 }
 

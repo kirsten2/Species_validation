@@ -34,8 +34,8 @@ This pipeline requires:
 * numpy
 * biopython
 * Bash
-* blast+ suite ([link]())
-* muscle ([link]())
+* blast+ ([link](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download))
+* muscle ([link](https://www.drive5.com/muscle/))
 
 
 Installation
@@ -43,9 +43,11 @@ Installation
 
 ```bash
 git clone https://github.com/kirsten2/Species_validation.git
+cd Species_validation
+export PATH=`pwd`/bin:$PATH
 ```
 
-Note: ```blast``` and ```muscle``` must be in the system path when executing the bash-scripts
+Note: in the following examples, it is assumed that the bin directory,```blast``` and ```muscle``` are in the system path.
 
 Quick-start: Running the pipeline with example data
 --------
@@ -57,10 +59,10 @@ The pipeline requires the following input-files:
 3. A tab-delimited file, specifying genome-ids for the candidate species
 4. A file with orthologous gene-families, predicted on the reference genomes
 
-A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://sandbox.zenodo.org/record/710401#.X9h27i3Mx2c). Download the data-set from zenodo:
+A data-set derived from the honey bee gut microbiota can be downloaded from zenodo, and used to test the pipeline [link](https://zenodo.org/record/4661061#.YGgpxC0RoRA). Download the data-set from zenodo:
 
 ```bash
-python3 bin/download_data.py --species_validation
+download_data.py --species_validation
 ```
 
 **Expected result**: two directories with genomic data for all genomes in the honey bee gut microbiota database (```faa_files```,```ffn_files```),  the genome database metafile (```genome_db_metafile_210402.txt```) and a fasta-file with metagenomic ORFs (```metagenomic_orfs.ffn```)
@@ -68,7 +70,7 @@ python3 bin/download_data.py --species_validation
 To run the pipeline on the 16S rRNA phylotype "Firm5", using 10 universal core gene families, start by generating alignment files using the reference genes of the sequenced genomes:
 
 ```bash
-bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
+prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
 ```
 
 **Expected result**: a new directory named ```firm5_uni```, containing fasta-files for the sequences and alignments of the 10 universal core gene families. 
@@ -76,10 +78,10 @@ bash bin/prep_corefam_aln.sh -d firm5_uni -o OrthologousGroups_uni_example.txt
 Next, run the species validation pipeline:
 
 ```bash
-bash bin/species_validation.sh -c Candidate_species_example.txt -i firm5_uni -d metagenomic_orfs.ffn
+species_validation.sh -c Candidate_species_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
 
-**Expected result**: Six new directories (```firm5_1```, ```firm5_2```,```firm5_3```,```firm5_4```,```firm5_7```, ```firm5_bombus```,), corresponding to each of six related putative species affiliated with the 16S rRNA phylotype "Lactobacillus Firm5". Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
+**Expected result**: Six new directories (```firm5_1```, ```firm5_2```,```firm5_3```,```firm5_4```,```firm5_7```, ```firm5_bombus```,), corresponding to each of six related putative species /SDPs affiliated with the 16S rRNA phylotype "Lactobacillus Firm5". Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
 The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
@@ -112,14 +114,3 @@ In contrast, for "firm5_bombus", the distributions overlap, and the vast majorit
 To address the question whether the candidate species are representative of the strains in the metagenomes, check the curve for the first distribution in the plot. For example, the curve for species "firm5_7" is exceptionally narrow (see "Recuitment_plot_examples.pdf"), with most values above 98%, indicative of a very close match between the strains in the metagenomes and the reference genomes in the database. On the other hand, a broader curve was generated for "firm5_4", indicating a somewhat higher level of divergence between the metagenomes and the database.
 
 To quantify a species, both requirements should be met (discreteness and high representation). 
-
-Running the pipeline with larger data-sets/other candidate species
---------
-
-To run the pipeline with the full set of core genes for all the putative species of this phylotype, re-run the bash-scripts substituting the candidate species file and the ortholog-file:
-
-```bash
-grep firm5 genome_db_metafile_210402.txt > Candidate_species_all_example.txt
-bash bin/prep_corefam_aln.sh -d firm5_all -o Orthofinder/4_firm5_single_ortho_filt.txt
-bash bin/species_validation.sh -c Candidate_species_all_example.txt -i firm5_all -d metagenomic_orfs.ffn
-```
