@@ -30,7 +30,7 @@ Pre-requisites
 
 This pipeline requires:
 
-* Python 3 (or higher)
+* Python 3 (version 3.6 or higher)
 * numpy
 * biopython
 * Bash
