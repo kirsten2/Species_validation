@@ -91,7 +91,7 @@ The R-script in the bin-directory can be used to plot the density distribution o
 Rscript plot_validation.R "firm5_3" perc_id.txt
 ```
 
-**Expected result**: in this case, a file named ```firm5_3_recruitment_plot.pdf```, displaying density distributions for ORFs with best hits to the SDP "firm5_3" shown in color, and ORFs with hits to related SDPs in grey. 
+**Expected result**: in this case, a file named ```firm5_3_recruitment_plot.pdf```, displaying density distributions for ORFs with best hits to the SDP "firm5_3" shown in color, and hits to related SDPs in grey. 
 
 Interpretation of results
 --------
