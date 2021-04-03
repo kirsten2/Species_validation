@@ -81,7 +81,7 @@ Next, run the species validation pipeline:
 species_validation.sh -c Candidate_species_example.txt -i firm5_uni -d metagenomic_orfs.ffn
 ```
 
-**Expected result**: Six new directories (```firm5_1```, ```firm5_2```,```firm5_3```,```firm5_4```,```firm5_7```, ```firm5_bombus```,), corresponding to each of six related putative species /SDPs affiliated with the 16S rRNA phylotype "Lactobacillus Firm5". Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
+**Expected result**: Six new directories (```firm5_1```, ```firm5_2```,```firm5_3```,```firm5_4```,```firm5_7```, ```firm5_bombus```,), corresponding to each of six related putative species/SDPs affiliated with the 16S rRNA phylotype *Lactobacillus* "Firm5". Each directory contains fasta-files with sequences of the ORFs recruited to each core gene family, and a file named ```perc_id.txt``` with the alignment results. The file ```log.txt``` will be printed in the run-directory, containing some summary data on the results. 
 
 The ```perc_id.txt```files contains the maximum alignment percentage identity for each recruited ORF to the reference core sequences of the recruiting species. It also details whether the first blast-hit for the ORF is to the recruiting species or to another species within the same 16S rRNA phylotype.
 
