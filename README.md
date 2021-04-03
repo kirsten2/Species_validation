@@ -100,7 +100,7 @@ prep_corefam_aln.sh -d firm5_all -o OrthologousGroups_firm5_example.txt
 species_validation.sh -c Candidate_species_example.txt -i firm5_all -d metagenomic_orfs.ffn
 ```
 
-Note: If running the pipeline with the universal orthologs and the *Lactobacillus* "Firm5" in the same directory, some warnings will be printed to stdout, and the previous "perc_id.txt" will be overwritten (so rename/copy the file to keep both results).
+Note: If running the pipeline with the universal orthologs and the *Lactobacillus* "Firm5" orthologs in the same directory, some warnings will be printed to stdout, and the previous "perc_id.txt" will be overwritten (so rename/copy the file to keep both results).
 
 Interpretation of results
 --------
