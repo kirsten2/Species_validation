@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##Parse script arguments (name of ortholog-file and output directory), or print script usage if they were not provided
 usage="
@@ -60,7 +60,7 @@ fi
 
 #Extract gene-sequences for each single-copy ortholog family into fasta-files in the output directory (exit script if unsuccessful).
 echo "Extracting filtered single-copy ortholog gene-family sequences into directory: $OUTDIR"
-python3 bin/extract_orthologs.py "$ORTHOFILE" "$OUTDIR"
+extract_orthologs.py "$ORTHOFILE" "$OUTDIR"
 if [ ! -d $OUTDIR ]; then
     exit 1 
 fi
@@ -77,10 +77,9 @@ for i in $( ls *.faa ); do
         OG=${i:0:9}
         echo "Processing: "$OG
         muscle -in $OG".faa" -out $OG"_aln.fasta" -quiet
-        #mafft --auto --quiet $OG".faa" > $OG"_aln.fasta"
         ALN_AA=$OG"_aln.fasta"
         FFN_FILE=$OG".ffn"
-        python3 ../bin/aln_aa_to_dna.py $ALN_AA $FFN_FILE
+        aln_aa_to_dna.py $ALN_AA $FFN_FILE
         ALN_NUC=$OG"_aln_nuc.fasta"
         sed 's/_.*$//g' $ALN_NUC > temp_aln.txt
         mv temp_aln.txt $ALN_NUC

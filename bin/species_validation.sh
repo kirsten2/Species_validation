@@ -70,12 +70,11 @@ fi
 #STEP1: Subset data from fasta-files in the input directory. Generate species directories, and write subset data to the corresponding dirs.
 
 echo 'Performing step1: subset fasta-files in the input directory' | tee -a "log.txt"
-python3 bin/extract_species_coreseqs.py $CAND_SPECIES $IN_DIR
-
+extract_species_coreseqs.py $CAND_SPECIES $IN_DIR
 
 #STEP2: Blasting species-level core sequences against ORF database
 
-SPECIES_DIR_STRING=$(python3 bin/get_species_dirs.py $CAND_SPECIES) #Get the species-dirs to be processed from the candidate-species input file, check that they contain fasta-files for blasting (exit bash-script with error message if they dont)
+SPECIES_DIR_STRING=$(get_species_dirs.py $CAND_SPECIES) #Get the species-dirs to be processed from the candidate-species input file, check that they contain fasta-files for blasting (exit bash-script with error message if they dont)
 IFS=' ' read -ra SPECIES_DIR <<< $SPECIES_DIR_STRING
 if [ ${SPECIES_DIR[0]} == "ERROR" ]; then
     echo $SPECIES_DIR_STRING | tee -a "log.txt"
@@ -111,7 +110,7 @@ IFS=$SAVEIFS
 echo 'Performing step3: recruiting ORF sequences from ORF database file, based on blast-files' | tee -a "log.txt"
 for DIR in "${SPECIES_DIR[@]}"; do
     echo "Processing species-directory: "$DIR 
-    python3 bin/recruit_ORFs.py $ORF_DB $DIR
+    recruit_ORFs.py $ORF_DB $DIR
 done
 
 
@@ -120,7 +119,7 @@ done
 echo 'Performing step4: adding recruited ORFs to core sequence gene alignments, and calculating max percentage identity' | tee -a "log.txt"
 for DIR in "${SPECIES_DIR[@]}"; do
     echo "Processing species-directory: "$DIR | tee -a "log.txt"
-    python3 bin/orf_aln_perc_id.py $CAND_SPECIES $IN_DIR $DIR
+    orf_aln_perc_id.py $CAND_SPECIES $IN_DIR $DIR
 done 
 
 echo 'All done! Check log.txt file for some summary stats on the results'
