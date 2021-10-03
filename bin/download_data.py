@@ -7,8 +7,7 @@
 #
 # ============================================================================ #
 
-import os
-import sys
+import os, sys, stat
 import tempfile
 import shutil
 import subprocess
@@ -108,6 +107,7 @@ for arg in all_args.keys():
         print('Removing corrupt file, and exiting script')
         os.remove(file_names[arg])
     #Extract files from archive
+    os.chmod(file_names[arg],stat.S_IRWXU|stat.S_IRWXG|stat.S_IROTH|stat.S_IXOTH)
     print('Extracting files from:', file_names[arg])
     extract_cmd = "tar -zxvf " + file_names[arg] + " -C "+ current_dir
     try:
