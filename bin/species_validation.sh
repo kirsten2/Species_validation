@@ -64,12 +64,13 @@ fi
 ORF_DB_INDEXFILE=$ORF_DB".nhr"
 if [ ! -f "$ORF_DB_INDEXFILE" ]; then
     echo "Indexing ORF-db file for blasting"
-    makeblastdb -in $ORF_DB -dbtype nucl
+    makeblastdb -in "$ORF_DB" -dbtype nucl
 fi
 
 #STEP1: Subset data from fasta-files in the input directory. Generate species directories, and write subset data to the corresponding dirs.
 
 echo 'Performing step1: subset fasta-files in the input directory' | tee -a "log.txt"
+
 extract_species_coreseqs.py $CAND_SPECIES $IN_DIR
 
 #STEP2: Blasting species-level core sequences against ORF database
@@ -82,11 +83,12 @@ if [ ${SPECIES_DIR[0]} == "ERROR" ]; then
 fi
 echo 'Performing step2: blasting species core sequences against ORF database' | tee -a "log.txt"
 RUN_DIR=$(pwd)
+
 SAVEIFS=$IFS  #code to counter-act automatic backups on mac (skip file-names with spaces..)
 IFS=$(echo -en "\n\b")
 for DIR in "${SPECIES_DIR[@]}"; do
     echo "Blasting core sequences in directory: "$DIR 
-    cd $DIR 
+    cd "$DIR" 
     COUNTER=0
     for i in $(ls *ffn); do
         if [[ "$i" =~ [[:space:]] ]]; then
@@ -94,13 +96,13 @@ for DIR in "${SPECIES_DIR[@]}"; do
         else
             (( COUNTER++ ))
             BLAST_OUTFILE=${i:0:9}".blastn"
-            blastn -db $RUN_DIR/$ORF_DB -query $i -outfmt 5 -evalue 1e-5 -perc_identity 70 > $BLAST_OUTFILE
+            blastn -db "$RUN_DIR/$ORF_DB" -query $i -outfmt 5 -evalue 1e-5 -perc_identity 70 > $BLAST_OUTFILE
         fi
-        if (( $COUNTER % 10 == 0 )); then
+        if (( "$COUNTER" % 10 == 0 )); then
             echo "Finished blasting $COUNTER files.."
         fi
     done  
-    cd $RUN_DIR
+    cd "$RUN_DIR"
     echo "Done" 
 done   
 IFS=$SAVEIFS
